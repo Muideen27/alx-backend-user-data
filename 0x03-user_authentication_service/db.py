@@ -54,9 +54,9 @@ class DB:
 
         return new_user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs) -> User:
         """
-        Find and return the first user in the database matching the given criteria.
+        Find & return the first user in the db match the criteria.
 
         Args:
             **kwargs: Arbitrary keyword arguments for filtering.
