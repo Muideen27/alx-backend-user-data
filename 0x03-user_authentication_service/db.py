@@ -102,7 +102,7 @@ class DB:
             # Find the user by user_id
             user = self.find_user_by(id=user_id)
 
-            # Check if the keyword arguments correspond to valid user attributes
+            # Check if the keyword args correspond to valid user attributes
             val_atr = ['email', 'hashed_password', 'session_id', 'reset_token']
             for key, value in kwargs.items():
                 if key not in val_atr:
