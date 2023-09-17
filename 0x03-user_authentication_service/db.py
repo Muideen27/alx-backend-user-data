@@ -2,6 +2,7 @@
 
 """DB module
 """
+from requests import session
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -84,3 +85,35 @@ class DB:
         except InvalidRequestError:
             # Handle InvalidRequestError exception
             raise InvalidRequestError("Invalid query argument.")
+        
+        
+    def update_user(self, user_id: int, **kwargs) -> User:
+        """
+        Update a user's attributes in the db based on the provided keyword arg.
+
+        Args:
+            user_id (int): The ID of the user to update.
+            **kwargs: Arbitrary keyword arguments for updating user attributes.
+
+        Raises:
+            NoResultFound: If no user is found with the given user_id.
+            ValueError: If an invalid arg is passed  not correspond to a user attr.
+        """
+        try:
+            # Find the user by user_id
+            user = self.find_user_by(id=user_id)
+
+            # Check if the keyword arguments correspond to valid user attributes
+            valid_attributes = ['email', 'hashed_password', 'session_id', 'reset_token']
+            for key, value in kwargs.items():
+                if key not in valid_attributes:
+                    raise ValueError(f"Invalid argument: {key}")
+
+                # Update the user's attribute
+                setattr(user, key, value)
+
+            # Commit the changes to the database
+            self._session.commit()
+
+        except NoResultFound:
+            raise NoResultFound(f"No user found with user_id: {user_id}")
