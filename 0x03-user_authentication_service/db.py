@@ -85,9 +85,8 @@ class DB:
         except InvalidRequestError:
             # Handle InvalidRequestError exception
             raise InvalidRequestError("Invalid query argument.")
-        
-        
-    def update_user(self, user_id: int, **kwargs) -> User:
+
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
         Update a user's attributes in the db based on the provided keyword arg.
 
@@ -97,16 +96,16 @@ class DB:
 
         Raises:
             NoResultFound: If no user is found with the given user_id.
-            ValueError: If an invalid arg is passed  not correspond to a user attr.
+            ValueErr: If an invalid arg is passed  not correspd to a user attr.
         """
         try:
             # Find the user by user_id
             user = self.find_user_by(id=user_id)
 
             # Check if the keyword arguments correspond to valid user attributes
-            valid_attributes = ['email', 'hashed_password', 'session_id', 'reset_token']
+            val_atr = ['email', 'hashed_password', 'session_id', 'reset_token']
             for key, value in kwargs.items():
-                if key not in valid_attributes:
+                if key not in val_atr:
                     raise ValueError(f"Invalid argument: {key}")
 
                 # Update the user's attribute
